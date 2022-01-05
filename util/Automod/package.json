@@ -1,0 +1,8 @@
+{
+  "name": "automod",
+  "version": "1.0.0",
+  "description": "Automoderator for Wave",
+  "main": "index.js",
+  "author": "DevAX1T#0001",
+  "license": "ASDL"
+}

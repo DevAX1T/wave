@@ -1,0 +1,23 @@
+{
+  "name": "commando",
+  "version": "1.0.0",
+  "description": "testbot lol",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "DevAX1T",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "dayjs": "^1.10.7",
+    "discord.js": "^12.5.3",
+    "discord.js-commando": "^0.12.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "ms": "^2.1.3",
+    "noblox.js": "^4.12.0",
+    "rethinkdb": "^2.4.2",
+    "ws": "^8.3.0"
+  }
+}

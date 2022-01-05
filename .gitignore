@@ -1,0 +1,4 @@
+# blacklist node modules
+node_modules/
+cache/**/*
+.env

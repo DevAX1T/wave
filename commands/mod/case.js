@@ -46,7 +46,7 @@ module.exports = class CaseCommand extends Command {
             }
             embed.addField('Case ID', `\`${Case.id}\``)
             message.channel.send(embed);
-        }).catch(e => {
+        }).catch(() => {
             message.reply('Sorry! I was unable to find that case.');
             return;   
         });

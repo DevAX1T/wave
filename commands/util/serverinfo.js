@@ -21,7 +21,7 @@ module.exports = class ServerInfoCommand extends Command {
         .setColor(color.blue)
         .setAuthor(message.guild.name, message.guild.iconURL())
         .setThumbnail(message.guild.iconURL())
-        .addField('Owner', message.guild.owner.user.tag, true)
+        .addField('Owner', `<@${message.guild.owner.user.id}>`, true)
         .addField('Category Channels', message.guild.channels.cache.filter(c => c.type === 'category').size, true)
         .addField('Text Channels', message.guild.channels.cache.filter(c => c.type === 'text').size, true)
         .addField('Voice Channels', message.guild.channels.cache.filter(c => c.type === 'voice').size, true)

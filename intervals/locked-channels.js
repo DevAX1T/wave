@@ -1,5 +1,5 @@
 module.exports = {
-    sec: 10, // seconds
+    sec: 10,
     run: (client, t) => {
         let channels = $.get('locked-channels').then(channels => {
             channels.forEach(lockedChannel => {

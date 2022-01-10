@@ -2,14 +2,14 @@ const {Command} = require('discord.js-commando');
 const {MessageEmbed} = require('discord.js');
 const dayjs = require('dayjs');
 dayjs.extend(require('dayjs/plugin/localizedFormat'));
-const ms = require('ms');
 module.exports = class CaseCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'case',
+            aliases: ['caseinfo'],
             group: 'mod',
             memberName: 'case',
-            description: 'Returns information about a case',
+            description: 'Returns information about a given moderation case.',
             guildOnly: true,
             args: [
                 {

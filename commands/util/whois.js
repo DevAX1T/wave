@@ -1,6 +1,6 @@
 const {Command} = require('discord.js-commando');
 const {MessageEmbed} = require('discord.js');
-const {oneLine, stripIndents} = require('common-tags');
+const {stripIndents} = require('common-tags');
 // use dayjs LocalizedFormat plugin
 const dayjs = require('dayjs');
 dayjs.extend(require('dayjs/plugin/localizedFormat'));
@@ -138,8 +138,7 @@ module.exports = class WhoisCommand extends Command {
         // Check if the user is verified with Roblox, if so, add their details here
         let verification = await $.get('users', args.member.id, 'roblox-verification').catch(() => {});
         if (verification) {
-            embed.addField(`Roblox Verification`, `\`${verification.robloxName}\` [[${verification.robloxId}](https://www.roblox.com/users/${verification.robloxId}/profile)]`);
-        //embed.addField('Roblox', `DevAX1T [[125196014](https://google.com/)]`)
+            embed.addField(`Roblox Account`, `\`${verification.robloxName}\` [[${verification.robloxId}](https://www.roblox.com/users/${verification.robloxId}/profile)]`);
         }
         message.channel.send(embed);
     }

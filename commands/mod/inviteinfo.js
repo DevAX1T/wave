@@ -11,7 +11,7 @@ module.exports = class InviteInfoCommand extends Command {
             args: [
                 {
                     key: 'invite',
-                    prompt: 'What invite would you like to get information on?',
+                    prompt: 'What invite would you like to get information from?',
                     type: 'string'
                 }
             ]

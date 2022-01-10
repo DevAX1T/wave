@@ -20,18 +20,14 @@ class DatabaseManager {
                 this.r = r;
                 resolve(conn);
                 output('blue', 'DatabaseManager', 'Connected to RethinkDB')
-            }).catch(err => {
-                reject(err);
-            });
+            }).catch(reject);
         });
     }
     async botSettings() {
         // return all bot settings (array form)
         let dbSettings = await new Promise((resolve, reject) => {
-            r.db(this.name).table('settings').run(this.conn).then(cursor => {
-                return cursor.toArray();
-            }).then(result => {
-                resolve(result);
+            r.db(this.name).table('settings').run(this.conn).then(async cursor => {
+                resolve(await cursor.toArray());
             }).catch(err => {
                 output('red', 'DatabaseManager', 'Failed to get bot settings; ' + err);
                 reject(err);
@@ -46,16 +42,13 @@ class DatabaseManager {
     async get(table, id, db) {
         return new Promise((resolve, reject) => {
             let query = r.db(db || this.name).table(table);
-            let qget;
+            let qget = id ? true : false;
             if (id) {
                 query = query.get(id);
-                qget = true;
             }
             query.run(this.conn).then(result => {
                 resolve(qget ? result : result.toArray());
-            }).catch(err => {
-                reject(err);
-            });
+            }).catch(reject);
         });
     }
     /**
@@ -68,11 +61,7 @@ class DatabaseManager {
     async clear(table, id, db) {
         return new Promise((resolve, reject) => {
             let query = r.db(db || this.name).table(table);
-            query.get(id).delete().run(this.conn).then(result => {
-                resolve(result);
-            }).catch(err => {
-                reject(err);
-            });
+            query.get(id).delete().run(this.conn).then(resolve).catch(reject);
         });
     }
     /**
@@ -98,11 +87,7 @@ class DatabaseManager {
     set(table, id, data, db) {
         return new Promise((resolve, reject) => {
             data.id = id;
-            r.db(db || this.name).table(table).insert(data).run(this.conn).then(result => {
-                resolve(result);
-            }).catch(err => {
-                reject(err);
-            })
+            r.db(db || this.name).table(table).insert(data).run(this.conn).then(resolve).catch(reject);
         });
     }
     setupdate(table, id, data, db) {
@@ -146,11 +131,7 @@ class DatabaseManager {
             if (id) {
                 query = query.get(id)
             }
-            query.update(data).run(this.conn).then(result => {
-                resolve(result);
-            }).catch(err => {
-                reject(err);
-            });
+            query.update(data).run(this.conn).then(resolve).catch(reject);
         });
     }
     query() { // Really just a shortcut

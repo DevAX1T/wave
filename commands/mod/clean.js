@@ -15,30 +15,24 @@ module.exports = class CleanCommand extends Command {
                     default: 50,
                     min: 1,
                     max: 100
-                },
-                {
-                    key: 'user',
-                    prompt: 'Who would you like to delete messages from?',
-                    type: 'user',
-                    default: ''
                 }
             ]
         });
     }
+    hasPermission(msg) {
+        return PermissionManager.isModerator(msg.member);
+    }
     run(message, args) {
         let amount = args.amount;
-        let user = args.user;
-        let channel = message.channel;
-        if (user) {
-            channel.messages.fetch({limit: amount}).then(messages => {
-                let filtered = messages.filter(m => m.author.id == user.id);
-                let deleted = channel.bulkDelete(filtered);
-                message.reply(`I deleted ${deleted.size} messages.`);
-            });
-        } else {
-            channel.bulkDelete(amount).then(() => {
-                message.reply(`I deleted ${amount} messages.`);
-            });
+        // mod general or announcements
+        if (message.channel.id === '817913292408094751' || message.channel.id === '859280291806183444') {
+            if (!PermissionManager.isAdmin(message.member, true)) {
+                message.reply('Sorry! Only Admins can purge messages in this channel.');
+                return;
+            }
         }
+        message.channel.bulkDelete(amount).then(() => {
+            message.reply(`I deleted \`${amount}\` message${amount > 0 ? 's' : ''}.`);
+        });
     }
 }

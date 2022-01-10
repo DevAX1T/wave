@@ -4,7 +4,7 @@ class CaseArgumentType extends ArgumentType {
 	constructor(client) {
 		super(client, 'case');
 	}
-	async validate(val, msg, arg) {
+	async validate(val) {
         // returns {string | boolean} Returns either an error prompting the user to try again or success
         // code
         if (val.length === 36) {
@@ -16,25 +16,14 @@ class CaseArgumentType extends ArgumentType {
                 }
             }
         }
-        if (val === 'last') {
+        if (val.toLowerCase() === 'last' || val.toLowerCase() === 'recent') {
             // get the case
-            new Promise(async (resolve, reject) => {
-                if (!lastCase) {
-                    reject();
-                    return;
-                }
-                resolve();
-            }).then(() => {
-                return true; 
-            }).catch(() => {
-                return false;
-            });
+            if (lastCase) return true;
+            return false;
         }
-        return false;	
     }
-	parse(val, msg) {
-        if (val === 'last') return lastCase;
-        return val
+	parse(val) {
+        return (val.toLowerCase() === 'last' || val.toLowerCase() === 'recent') ? lastCase : val;
 	}
 }
 module.exports = CaseArgumentType;

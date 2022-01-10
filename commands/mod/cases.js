@@ -1,9 +1,7 @@
 const {Command} = require('discord.js-commando');
 const {MessageEmbed} = require('discord.js');
-const {oneLine, stripIndents} = require('common-tags');
+const {stripIndents} = require('common-tags');
 const ms = require('ms');
-const dayjs = require('dayjs');
-dayjs.extend(require('dayjs/plugin/localizedFormat'));
 module.exports = class CasesCommand extends Command {
     constructor(client) {
         super(client, {
@@ -100,7 +98,7 @@ module.exports = class CasesCommand extends Command {
                     page++;
                 }
             }
-        }).catch(e => {
+        }).catch(() => {
             message.reply('Sorry! I was unable to get that user\'s moderation history. Try running this command again.');
         });
     }

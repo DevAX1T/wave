@@ -11,7 +11,7 @@ module.exports = class BanCommand extends Command {
             name: 'ban',
             group: 'mod',
             memberName: 'ban',
-            description: 'Bans a user.',
+            description: 'Bans a user from the Discord server.',
             guildOnly: true,
             args: [
                 {
@@ -49,7 +49,7 @@ module.exports = class BanCommand extends Command {
                 action: 'ban',
                 reason: args.reason
             });
-            await Case.submit().then(async s => {
+            Case.submit().then(async () => {
                 await Case.send();
                 await message.guild.members.ban(args.user, {reason:`Case ${Case.id} | ${args.reason}`}).then(async () => {
                     Case.successEmbed(message.channel, 'banned');

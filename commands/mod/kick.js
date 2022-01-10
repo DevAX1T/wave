@@ -5,7 +5,7 @@ module.exports = class KickCommand extends Command {
             name: 'kick',
             group: 'mod',
             memberName: 'kick',
-            description: 'Kicks a user from the server',
+            description: 'Removes a user from the Discord server.',
             guildOnly: true,
             args: [
                 {
@@ -25,7 +25,7 @@ module.exports = class KickCommand extends Command {
         return PermissionManager.isModerator(msg.member)
     }
     async run(message, args) {
-        PermissionManager.compare(message.member, args.member).then(async e => {
+        PermissionManager.compare(message.member, args.member).then(() => {
             let Case = CaseManager.Case({
                 action: 'kick',
                 moderator: message.author.id,
@@ -33,7 +33,7 @@ module.exports = class KickCommand extends Command {
                 reason: args.reason,
                 createdAt: Math.floor(Date.now() / 1000)
             });
-            await Case.submit().then(async s => {
+            Case.submit().then(async () => {
                 await Case.send();
                 global.kickedMembers[args.member.user.id] = true;
                 setTimeout(() => {
@@ -47,7 +47,7 @@ module.exports = class KickCommand extends Command {
                   Case.deleteMessages();
                 });
             })
-        }).catch(e => {
+        }).catch(() => {
             message.reply('Sorry! You\'re unable to kick that user.')
         })
     }

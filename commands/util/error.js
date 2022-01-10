@@ -1,5 +1,5 @@
 const {Command} = require('discord.js-commando');
-const {MessageEmbed, MessageAttachment} = require('discord.js');
+const {MessageAttachment} = require('discord.js');
 const fs = require('fs');
 const {oneLine, stripIndents} = require('common-tags');
 const dayjs = require('dayjs');

@@ -2,7 +2,6 @@ const noblox = require('noblox.js');
 module.exports = {
     event: 'ready',
     once: true,
-    // external: true, // if true, the event will be called in external servers
     try: async function(client) {
         output('magenta', 'Discord', `Connected to Discord as ${client.user.tag}`);
         client.user.setPresence(settings.presence);
@@ -12,11 +11,10 @@ module.exports = {
         client.version = '1.0.0' + (isWindows ? '-dev' : ''); // BOTVERSION
         client.cache = {};
         // Connect to noblox.js
-        const user = await noblox.setCookie(settings.cookie);
-        if (user) {
+        noblox.setCookie(settings.cookie).then((user) => {
             output('green', 'Roblox', `Connected to Roblox as ${user.UserName} (${user.UserID})`)
-        } else {
+        }).catch(() => {
             output('red', 'Roblox', 'Failed to connect to Roblox')
-        }
+        })
     }
 }

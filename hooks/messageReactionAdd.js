@@ -11,19 +11,10 @@ function getEmoji(reaction) {
         }
     }
 }
-function promiseReactionRoles(reaction, user, client) {
-    return new Promise((resolve, reject) => {
-        $.get('reaction-roles', reaction.message.id).then(data => {
-            resolve(data);
-        }).catch(err => {
-            reject(err);
-        });
-    });
-}
 function processReactionRoles(reaction, user, client) {
     let member = reaction.message.guild.members.cache.get(user.id);
     if (!member) return;
-    promiseReactionRoles(reaction, user, client).then(async (data) => {
+    $.get('reaction-roles', reaction.message.id).then(async data => {
         if (data) {
             let reactionFound = data[getEmoji(reaction)];
             if (reactionFound) {
@@ -37,13 +28,10 @@ function processReactionRoles(reaction, user, client) {
                 }
             }
         }
-    }).catch(err => {
-        return;
-    })
+    }).catch(() => {return});
 }
 module.exports = {
     event: 'messageReactionAdd',
-    // external: true, // if true, the event will be called in external servers
     try: async function(reaction, user, client) {
         if (user.bot) return;
         if (reaction.partial) {
@@ -54,6 +42,7 @@ module.exports = {
                 return;
             }
         }
+        if (!hookValidate(reaction.message)) return;
         processReactionRoles(reaction, user, client);
     }
 }

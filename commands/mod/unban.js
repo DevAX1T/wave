@@ -10,7 +10,7 @@ module.exports = class UnbanCommand extends Command {
             name: 'unban',
             group: 'mod',
             memberName: 'unban',
-            description: 'Unbans a user from the server.',
+            description: 'Unbans a user from the Discord server.',
             guildOnly: true,
             args: [
                 {
@@ -50,11 +50,11 @@ module.exports = class UnbanCommand extends Command {
             await Case.send();
             message.guild.members.unban(args.user, `Case ${Case.id} | ${args.reason}`).then(() => {
                 Case.successEmbed(message.channel, 'unbanned');
-            }).catch(err => {
+            }).catch(() => {
                 error(message, args, Case);  
             });
             message.reply(`Successfully unbanned ${args.user.tag}`);
-        }).catch(err => {
+        }).catch(() => {
             error(message, args, Case);
         });
     }

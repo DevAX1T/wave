@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const Commando = require('discord.js-commando');
 
 // Require OUR modules
-let {PermissionManager, ErrorManager, WebManager, DatabaseManager, HookManager, IntervalManager, GlobalManager, CaseManager} = require('./util/ManagerClient.js');
+let {PermissionManager, ErrorManager, DatabaseManager, HookManager, IntervalManager, GlobalManager, CaseManager} = require('./util/ManagerClient.js');
 dotenv.config();
 // set some global variables
 let [settings, isWindows] = [{}, process.platform == 'win32'];
@@ -15,10 +15,6 @@ GlobalManager = new GlobalManager([
 ]);
 PermissionManager = new PermissionManager();
 ErrorManager = new ErrorManager();
-// WebManager = new WebManager({
-//     port: parseInt(process.env.webPort),
-//     registerIn: path.join(__dirname, 'web')
-// });
 DatabaseManager = new DatabaseManager({
     host: process.env.primary_db_host,
     port: parseInt(process.env.primary_db_port),
@@ -35,16 +31,6 @@ async function start() {
     global.PermissionManager = PermissionManager;
     global.ErrorManager = ErrorManager;
     global.DatabaseManager = DatabaseManager;
-    // await WebManager.registerAuth({
-    //     id: 'API-Bearer',
-    //     type: 'Bearer',
-    //     validate: (token, req, res) => {
-    //         let split = token.split(' ')
-    //         return (split[0] == 'Bearer' && split[1] == settings.apiToken);
-    //     }
-    // })
-    // await WebManager.search();
-    // now we can FINALLY start the client
     const client = new Commando.Client({
         owner: settings.owners,
         commandPrefix: isWindows ? settings.prefix.testing : settings.prefix.production,
@@ -63,10 +49,9 @@ async function start() {
     })
     .registerCommandsIn(path.join(__dirname, 'commands'));
     // Log into the client
-    client.login(isWindows ? settings.token.testing : settings.token.production);
+    await client.login(isWindows ? settings.token.testing : settings.token.production);
     new HookManager(client, path.join(__dirname, 'hooks'));
     new IntervalManager(path.join(__dirname, 'intervals'), client);
-    new WebManager(client);
     global.CaseManager = new CaseManager(client);
     global.pending = {};
     global.$client = client;

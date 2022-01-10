@@ -1,5 +1,5 @@
 const {Command} = require('discord.js-commando');
-const {MessageEmbed, Collection} = require('discord.js');
+const {MessageEmbed} = require('discord.js');
 const noblox = require('noblox.js');
 const axios = require('axios');
 async function roverApi(message) {return axios.get('https://verify.eryn.io/api/user/' + message.author.id);}

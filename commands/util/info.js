@@ -1,12 +1,12 @@
 const {Command} = require('discord.js-commando');
 const {MessageEmbed} = require('discord.js');
-const {oneLine, stripIndents} = require('common-tags');
+const {stripIndents} = require('common-tags');
 const dayjs = require('dayjs');
 module.exports = class InfoCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'info',
-            aliases: ['information', 'about', 'uptime'],
+            aliases: ['about', 'uptime'],
             memberName: 'info',
             description: 'Displays information about the bot.',
             group: 'util',
@@ -16,7 +16,7 @@ module.exports = class InfoCommand extends Command {
             }
         });
     }
-    run(message, args) {
+    run(message) {
         let seconds = Math.floor(process.uptime());
         let minutes = (seconds - seconds % 60) / 60;
         seconds -= minutes * 60;
@@ -25,7 +25,7 @@ module.exports = class InfoCommand extends Command {
         let embed = new MessageEmbed()
         .setAuthor(message.client.user.username, message.client.user.avatarURL())
         .setDescription(stripIndents`
-            A moderation and utility bot made specifically for Lost Islands.
+        A moderation and utility bot designed and developed for Lost Islands.
         `)
         .addField('Version', message.client.version, true)
         .addField('Library', 'Commando', true)

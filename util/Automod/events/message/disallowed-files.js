@@ -4,6 +4,7 @@ module.exports = (message) => {
     if (message.partial) return;
     if (message.author.bot) return;
     if (!message.guild) return;
+    if (!hookValidate(message)) return;
     message.attachments.forEach(attachment => {
         let extension = attachment.name.split('.').pop();
         let isFound;

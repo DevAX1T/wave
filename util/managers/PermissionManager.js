@@ -26,7 +26,7 @@ class PermissionManager {
     }
     isDiscord(obj, strict) { // return true if message is from the Lost Islands discord server
         // get the type of the message
-        let condition = obj.guild.id === settings.guild;
+        let condition = obj.guild && obj.guild.id === settings.guild;
         return strict ? condition : (condition || this.messages.discord)
     }
     isModChannel(msg, strict) {

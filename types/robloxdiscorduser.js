@@ -18,8 +18,8 @@ class RobloxDiscordUserArgumentType extends ArgumentType {
 	async validate(val, msg, arg) {
 		let result;
 		if (val.includes('#')) return null;
-		if (val.toLowerCase().includes('id-')) {
-			let id = val.toLowerCase().split('id-')[1];
+		if (val.toLowerCase().includes('user:')) {
+			let id = val.toLowerCase().split('user:')[1];
 			let usertype = arg.type.types[1];
 			if (usertype && usertype.id === 'user') {
 				let isValidate = await usertype.validate(id, msg, arg);

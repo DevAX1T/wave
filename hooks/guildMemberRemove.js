@@ -2,7 +2,7 @@ const {MessageEmbed} = require('discord.js');
 module.exports = {
     event: 'guildMemberRemove',
     try: function(member, client) {
-        if (member.guild.id !== settings.guild) return;
+        if (!hookValidate(member)) return;
         if (global.kickedMembers[member.user.id]) return;
         let channel = member.guild.channels.cache.get(settings.channels.discord_logs);
         let embed = new MessageEmbed()

@@ -38,7 +38,7 @@ module.exports = class MuteCommand extends Command {
         return PermissionManager.isModerator(msg.member)
     }
     run(message, args) {
-        PermissionManager.compare(message.member, args.member).then(async e => {
+        PermissionManager.compare(message.member, args.member).then(async () => {
             if (args.member.communicationDisabledUntilTimestamp && (args.member.communicationDisabledUntilTimestamp*1000) > Math.floor(Date.now())) {
                 message.reply('Sorry! That user is already muted.');
                 return;
@@ -52,18 +52,18 @@ module.exports = class MuteCommand extends Command {
                     reason: args.reason,
                     expires: createdAt + args.duration
                 })
-                await Case.submit().then(async s => {
+                Case.submit().then(async () => {
                     await Case.send();
                     await args.member.timeout((createdAt + args.duration) * 1000, `Case ${Case.id} | ${args.reason}`).then(async () => {
                         Case.successEmbed(message.channel, 'muted');
-                    }).catch(e => {
+                    }).catch(() => {
                         error(message, args, Case);
                     })
-                }).catch(e => {
+                }).catch(() => {
                     error(message, args, Case);
                 })
             }
-        }).catch(e => {
+        }).catch(() => {
             message.reply('Sorry! You\'re unable to mute that user.');
         });
     }

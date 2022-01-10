@@ -5,6 +5,7 @@ module.exports = (message) => {
     if (message.author.bot) return;
     if (!message.guild) return;
     if (!message.content) return;
+    if (!hookValidate(message)) return;
     let regex = /discord(?:(?:app)?\.com\/invite|\.gg(?:\/invite)?)\/([\w-]{2,255})/gi;
     let matches = message.content.match(regex);
     if (matches && matches.length > 0) {

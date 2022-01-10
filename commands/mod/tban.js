@@ -12,7 +12,7 @@ module.exports = class BanCommand extends Command {
             name: 'tban',
             group: 'mod',
             memberName: 'tban',
-            description: 'Temporarily bans a user.',
+            description: 'Temporarily bans a user from the Discord server.',
             guildOnly: true,
             args: [
                 {
@@ -57,21 +57,21 @@ module.exports = class BanCommand extends Command {
                 reason: args.reason,
                 expires: createdAt + args.duration
             });
-            await Case.submit().then(async s => {
+            Case.submit().then(async () => {
                 await Case.send();
                 await message.guild.members.ban(args.user, {reason:`Case ${Case.id} | ${args.reason}`}).then(async () => {
                     Case.successEmbed(message.channel, 'banned');
                 }).catch(e => {
                     error(message, args, Case);
                 })
-            }).catch(e => {
+            }).catch(() => {
                 error(message, args, Case);   
             });
         };
         if (args.user.guild) {
-            PermissionManager.compare(message.member, args.user).then(async e => {
+            PermissionManager.compare(message.member, args.user).then(async () => {
                 ban();
-            }).catch(e => {
+            }).catch(() => {
                 message.reply('Sorry! You can\'t ban that user.');
                 return;
             })

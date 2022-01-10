@@ -3,7 +3,7 @@ module.exports = {
     event: 'guildMemberAdd',
     try: function(member, client) {
         // First of all send a user joined message in discord logs
-        if (member.guild.id !== settings.guild) return;
+        if (!hookValidate(member)) return;
         let channel = member.guild.channels.cache.get(settings.channels.discord_logs);
         let embed = new MessageEmbed()
         .setColor(color.discordGreen)
@@ -14,7 +14,7 @@ module.exports = {
         .setFooter(footer);
         channel.send(embed);
         // Then send a welcome message to the user if joinDM is enabled
-        if (settings.joinDM) {
+        if (settings.joinDM && process.platform !== 'win32') {
             let welcomeMessage = settings.welcomeMessage;
             welcomeMessage = welcomeMessage.replace('%USERNAME%', member.user.username);
             welcomeMessage = welcomeMessage.replace('%SERVER%', member.guild.name);
@@ -22,11 +22,5 @@ module.exports = {
             welcomeMessage = welcomeMessage.replace('%PREFIX%', client.commandPrefix);
             member.send(welcomeMessage);
         }
-        // Add account filter
-        let accountAge = member.user.createdTimestamp * 1000;
-        let now = Date.now();
-        let diff = now - accountAge;
-        let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        console.log(days)
     }
 }

@@ -1,4 +1,3 @@
-const dayjs = require('dayjs');
 const {Command} = require('discord.js-commando');
 function error(message, args, Case) {
     Case.errorEmbed(message.channel, 'unmute');
@@ -33,7 +32,7 @@ module.exports = class UnmuteCommand extends Command {
         return PermissionManager.isModerator(msg.member)
     }
     run(message, args) {
-        PermissionManager.compare(message.member, args.member).then(async e => {
+        PermissionManager.compare(message.member, args.member).then(() => {
             if (!args.member.communicationDisabledUntil) {
                 message.reply('Sorry! That user isn\'t muted.');
                 return;
@@ -45,7 +44,7 @@ module.exports = class UnmuteCommand extends Command {
                     action: 'unmute',
                     reason: args.reason
                 })
-                await Case.submit().then(async s => {
+                Case.submit().then(async () => {
                     await Case.send();
                     await args.member.timeout(null, `Case ${Case.id} | ${args.reason}`).then(async () => {
                         Case.successEmbed(message.channel, 'unmuted');

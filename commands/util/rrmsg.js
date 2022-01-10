@@ -1,7 +1,6 @@
 const {Command} = require('discord.js-commando');
 const {MessageEmbed} = require('discord.js');
-const {oneLine, stripIndents} = require('common-tags');
-const dayjs = require('dayjs');
+const {stripIndents} = require('common-tags');
 module.exports = class RRcommand extends Command {
     constructor(client) {
         super(client, {
@@ -14,6 +13,25 @@ module.exports = class RRcommand extends Command {
         });
     }
     async run(message, args) {
+        let embed2 = new MessageEmbed()
+        .setColor(color.blue)
+        .setTitle('Helpful Links')
+        .setDescription(`Use the links below to learn more about Lost Islands and use our forms.`)
+        .addField('About Lost Islands', stripIndents`
+            [Info Hub](https://docs.google.com/spreadsheets/d/10P1GFQ-wYio30wbA7N_Yjsxe8CvGSBnzR32STDc4PCg/edit#gid=854893660)
+            [Changelogs & Roadmaps](https://trello.com/b/iNpxKgOA/lost-islands)
+        `, true)
+        .addField('Forms', stripIndents`
+            [Report a user](${settings.reportForm})
+            [Appeal a punishment](${settings.appealForm})
+        `, true)
+        // .addFields(
+        //     {name: 'Information Sheet', value: `[Google Sheets]()`},
+        //     {name: 'Ban Appeal Form', value: `[Google Form](${settings.appealForm})`},
+        //     {name: 'Report Form', value: `[Google Form](${settings.reportForm})`},
+        //     {name: 'Changelogs & Roadmaps', value: `[Trello Board]()`},
+        // )
+        await message.channel.send(embed2);
         let embed = new MessageEmbed()
         .setColor(color.blue)
         .setTitle('Reaction Roles')

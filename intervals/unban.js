@@ -10,7 +10,7 @@ module.exports = {
                         let isBanned;
                         await guild.fetchBans().then(bans => {
                             isBanned = bans.has(c.offender);
-                        });
+                        }).catch(() => {return});
                         if (isBanned) {
                             guild.members.unban(c.offender, 'Expiration');
                             let Case = CaseManager.Case({
@@ -23,6 +23,8 @@ module.exports = {
                             Case.submit().then(() => {
                                 $.clear('active-cases', c.id).catch(() => {});
                             }).catch(() => {});
+                        } else {
+                            $.clear('active-cases', c.id).catch(() => {});
                         }
                     }
                     // unban the user from the guild

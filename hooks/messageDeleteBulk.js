@@ -4,9 +4,8 @@ const dayjs = require('dayjs');
 dayjs.extend(require('dayjs/plugin/localizedFormat'));
 module.exports = {
     event: 'messageDeleteBulk',
-    // external: true, // if true, the event will be called in external servers
     try: async function(messages, client) {
-        console.log('CALLED')
+        if (!hookValidate(messages.first())) return;
         let str = '';
         messages.forEach(message => {
             if (!message.partial) {

@@ -7,7 +7,7 @@ module.exports = class EditCommand extends Command {
             aliases: ['editcase', 'reason'],
             group: 'mod',
             memberName: 'edit',
-            description: 'Edits a case',
+            description: 'Edits a case reason.',
             details: 'Passing in `last` as the Case ID will edit the most recent case.',
             guildOnly: true,
             args: [
@@ -28,13 +28,13 @@ module.exports = class EditCommand extends Command {
         return PermissionManager.isModerator(msg.member);
     }
     async run(message, args) {
-        await CaseManager.Case(args.case.id).then(async c => {
+        await CaseManager.Case(args.case).then(async c => {
             c.edit(message.author.id, args.reason).then(() => {
                 c.successEmbed(message.channel, `${emoji.auth} Successfully edited Case ${c.id}`, true);
             }).catch(() => {
                 message.reply('Sorry! An error occurred while editing that case.')
             })
-        }).catch(async e => {
+        }).catch(() => {
             message.reply('Sorry! That case doesn\'t exist.')
         });
     }

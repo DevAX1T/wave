@@ -1,8 +1,6 @@
 const uuid = require('uuid/v4');
-const axios = require('axios');
-const ms = require('ms');
 const { MessageEmbed } = require('discord.js');
-const { oneLine, stripIndents } = require('common-tags');
+const {stripIndents } = require('common-tags');
 const dayjs = require('dayjs');
 dayjs.extend(require('dayjs/plugin/localizedFormat'));
 function checkReason(reason) {

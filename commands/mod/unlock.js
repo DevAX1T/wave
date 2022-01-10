@@ -1,5 +1,4 @@
 const {Command} = require('discord.js-commando');
-const ms = require('ms');
 module.exports = class UnlockCommand extends Command {
     constructor(client) {
         super(client, {
@@ -18,7 +17,7 @@ module.exports = class UnlockCommand extends Command {
         let vg = settings.channels.vetgen;
         let cc = settings.channels.contentcreators;
         if (message.channel.id === vg || message.channel.id === cc) {
-            message.reply('You cannot unlock this channel.');
+            message.reply('Sorry! You cannot unlock this channel.');
             return;
         }
         let canLock = message.channel.permissionsFor(message.guild.id)?.has('SEND_MESSAGES');

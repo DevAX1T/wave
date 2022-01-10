@@ -1,5 +1,4 @@
 const {Command} = require('discord.js-commando');
-const {MessageEmbed} = require('discord.js');
 module.exports = class WarnCommand extends Command {
     constructor(client) {
         super(client, {
@@ -28,7 +27,7 @@ module.exports = class WarnCommand extends Command {
         return PermissionManager.isModerator(msg.member)
     }
     async run(message, args) {
-        PermissionManager.compare(message.member, args.member).then(async e => {
+        PermissionManager.compare(message.member, args.member).then(() => {
             let Case = CaseManager.Case({
                 createdAt: Math.floor(Date.now() / 1000),
                 moderator: message.author.id,
@@ -36,16 +35,16 @@ module.exports = class WarnCommand extends Command {
                 action: 'warn',
                 reason: args.reason
             });
-            await Case.submit().then(async s => {
+            Case.submit().then(async () => {
                 await Case.send();
                 await Case.successEmbed(message.channel, 'warned');
                 // We'd do stuff, but it's a warn, not anything else
-            }).catch(e => {
+            }).catch(() => {
                 message.reply('Sorry! I was unable to warn that user.');
                 $.clear('cases', Case.id).catch(() => {});
                 Case.deleteMessages();
             })
-        }).catch(e => {
+        }).catch(() => {
             message.reply('Sorry! You\'re unable to warn that user.');
         })
     }

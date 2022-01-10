@@ -6,7 +6,7 @@ module.exports = class LockCommand extends Command {
             name: 'lock',
             group: 'mod',
             memberName: 'lock',
-            description: 'Locks a discord channel for the specified time.',
+            description: 'Locks a Discord channel for the specified time.',
             guildOnly: true,
             args: [{
                 key: 'duration',
@@ -29,7 +29,7 @@ module.exports = class LockCommand extends Command {
         }
         let canLock = message.channel.permissionsFor(message.guild.id)?.has('SEND_MESSAGES');
         if (!canLock) {
-            message.reply('This channel is already locked.');
+            message.reply('Sorry! This channel is already locked.');
         } else {
             message.channel.updateOverwrite(message.guild.id, {SEND_MESSAGES: false}).then(() => {
                 // Store the lock on the database
@@ -44,7 +44,7 @@ module.exports = class LockCommand extends Command {
                         guild: message.guild.id
                     });
                 })
-            }).catch(e => {
+            }).catch(() => {
                 message.reply('Sorry! I had an error trying to lock the channel.')
             });
         }

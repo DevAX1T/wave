@@ -60,6 +60,7 @@ colors.white = RGB(255,255,255)
 colors.lightPurple = RGB(135, 106, 235)
 colors.violet = RGB(113, 76, 248)
 colors.purple = RGB(85, 42, 240)
+colors.black = RGB(0, 0, 0)
 module.exports = {
     global: {
         colors: colors,

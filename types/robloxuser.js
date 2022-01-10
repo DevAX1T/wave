@@ -1,21 +1,11 @@
 const {ArgumentType} = require('discord.js-commando');
 const noblox = require('noblox.js');
-/*
-run(message, {user}) {
-        if (user instanceof User) {
-            message.reply(`Discord user ${user.tag} (${user.id})`)
-        } else {
-            message.reply(`Roblox user ${user}`)
-        }
-
-		*/
 let regex = /\d+/;
-// url.match(regex)[0] is the id
 class RobloxUserArgumentType extends ArgumentType {
 	constructor(client) {
 		super(client, 'rbxuser');
 	}
-	async validate(val, msg, arg) {
+	async validate(val, msg) {
 		let result;
 		if (val.includes('#')) return null;
 			let userId = parseInt(val);
@@ -34,7 +24,7 @@ class RobloxUserArgumentType extends ArgumentType {
 			} else result = userId;
 		if (typeof result === 'string') return result;
 		if (result) {
-			msg.client.cache[msg.id] = result; // userid
+			msg.client.cache[msg.id] = result;
 			setTimeout(() => {
 				msg.client.cache[msg.id] = undefined;
 			}, 3600 * 1000);

@@ -5,7 +5,7 @@ class GlobalManager {
         global.dformat = 'YYYY-MM-DD hh:mm A';
         global.lastCase = false;
         global.hookValidate = (object, strict) => {
-            return (strict ? object.id : object.guild.id) === settings.guild;
+            return (strict ? object?.id : object.guild?.id) === settings.guild;
         }
         global.output = (color, subMessage, message) => {
         let ocolors = {

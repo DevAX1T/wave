@@ -29,7 +29,7 @@ module.exports = class InfoCommand extends Command {
         `)
         .addField('Version', message.client.version, true)
         .addField('Library', 'Commando', true)
-        .addField('Creator', 'DevAX1T#0001', true)
+        .addField('Creator', `<@${message.client.owners[0].id}>`, true)
         .addField('Operating System', isWindows ? 'Windows' : 'Linux', true)
         .addField('Uptime', `${hours} hrs, ${minutes} min, ${seconds} sec`, true)
         .setFooter(dayjs.unix(botUptime).format('Up [s]ince l LT PST'))

@@ -1,6 +1,6 @@
 const {Command} = require('discord.js-commando');
 const {MessageEmbed} = require('discord.js');
-const {stripIndents} = require('common-tags');
+const {oneLine, stripIndents} = require('common-tags');
 const ms = require('ms');
 module.exports = class CasesCommand extends Command {
     constructor(client) {
@@ -61,7 +61,10 @@ module.exports = class CasesCommand extends Command {
                 let page = 1;
                 const embed = new MessageEmbed()
                 .setTitle(`${args.user.tag}'s Moderation History [${cases.length}]`)
-                .setColor(color.blue);
+                .setColor(color.blue)
+                .setDescription(stripIndents`
+                    <@${args.user.id}> has \`${cases.length}\` case${cases.length > 1 ? 's' : ''} on record.
+                    Their most recent case was \`${cases[cases.length - 1].id}\`.`);
                 let replySent;
                 for (let i = 0; i < iterations; i++) {
                     const batch = cases.slice((i * pagelimit), (i * pagelimit) + pagelimit);
@@ -72,7 +75,7 @@ module.exports = class CasesCommand extends Command {
                             message.reply('Sorry! I had an error trying to get the case details. Please run this command again.');
                             return;
                         };
-                        embed.addField(`Case ${Case.id}`, stripIndents`
+                        embed.addField(`Case \`${Case.id}\``, stripIndents`
                             **Action:** ${Case.Case.action}
                             **Moderator:** ${Case.moderator.tag} (${Case.moderator.id})
                             **Date:** <t:${Case.Case.createdAt}:R>
@@ -98,7 +101,8 @@ module.exports = class CasesCommand extends Command {
                     page++;
                 }
             }
-        }).catch(() => {
+        }).catch((e) => {
+            console.log(e)
             message.reply('Sorry! I was unable to get that user\'s moderation history. Try running this command again.');
         });
     }

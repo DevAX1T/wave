@@ -8,7 +8,7 @@ module.exports = {
         // set global.botUptime to the current unix time in seconds
         global.botUptime = Math.floor(Date.now() / 1000);
         global.clientDomain = isWindows ? 'localhost' : 'https://devax1t.xyz';
-        client.version = '1.0.2' + (isWindows ? '-dev' : ''); //Bot Version
+        client.version = '1.0.3' + (isWindows ? '-dev' : ''); //Bot Version
         client.cache = {};
         // Connect to noblox.js
         noblox.setCookie(settings.cookie).then((user) => {

@@ -33,7 +33,7 @@ module.exports = class UnmuteCommand extends Command {
     }
     run(message, args) {
         PermissionManager.compare(message.member, args.member).then(() => {
-            if (!args.member.communicationDisabledUntil) {
+            if (!args.member.communicationDisabledUntilTimestamp) {
                 message.reply('Sorry! That user isn\'t muted.');
                 return;
             } else {

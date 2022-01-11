@@ -1,6 +1,6 @@
 {
   "name": "wave",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Moderation & Utility bot for Lost Islands.",
   "main": "index.js",
   "scripts": {

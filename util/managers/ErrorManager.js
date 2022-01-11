@@ -35,31 +35,17 @@ class ErrorManager {
     async create(err, type, command) {
         if (!err.stack) return;
         let unix = Math.floor(Date.now() / 1000);
-        $.set('errors', uuid(), {
+        let id = uuid();
+        $.set('errors', id, {
             type: type,
-            command: command,
+            command: command ? command.name : null,
             error: err.stack,
-            unix: unix
+            created: unix
         }).then(() => {
-            log(`ErrorManager: Created new error ${id} \n${err.stack}`);
+            log(`ErrorManager: Created new error \`${id}\`\n${err.stack}`);
         }).catch(saveError => {
             log(`ErrorManager Create: Error failed to save; Type ${type}; ${command ? command.name : saveError} ||||| STACK ${err.stack}`);
-        })
-        // m.query().table('errors').insert({
-        //     id: id,
-        //     type: type,
-        //     error: err.stack,
-        //     created: unix,
-        //     command:  command ? command.name : null
-        // }).run(m.conn, function(err2, result) {
-        //     if (err2) {
-        //         log(`ErrorManager create: error failed to save; ${type}; ${command ? command.name : err2}`);
-        //         return;
-        //     }
-        //     log(`ErrorManager: created new error ${id} ${
-        //         isWindows ? `\n${err.stack}` : ''
-        //     }`)
-        // });
+        });
     }
 }
 module.exports = ErrorManager;

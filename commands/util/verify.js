@@ -195,8 +195,8 @@ module.exports = class VerifyCommand extends Command {
             examples: ['verify'],
             guildOnly: true,
             throttling: {
-                usages: 99,//1,
-                duration: 10
+                usages: 1,
+                duration: 7
             }
         });
     }

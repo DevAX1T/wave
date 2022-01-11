@@ -2,9 +2,7 @@
 var uuid = require('uuid/v4');
 // generate a new uuid
 function log(...args) {
-    if (isWindows) {
-        console.log(...args);
-    }   
+    console.log(...args);
 }
 class ErrorManager {
     async get(id) {

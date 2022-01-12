@@ -209,7 +209,16 @@ module.exports = class VerifyCommand extends Command {
             message.reply('Sorry! An error occurred. Please try again later.');
             return;
         })
-        if (verifiedUser) {
+        let hasRole = message.member.roles.cache.find(r => r.id === settings.roles.verified);
+        if (!verifiedUser) {
+            promptUser(message);
+        } else if (verifiedUser && !hasRole) {
+            message.member.roles.add(settings.roles.verified).then(() => {
+                message.reply('You were successfully verified!');  
+            }).catch(() => {
+                message.reply('Sorry! I couldn\'t add the verified role to you. Please contact an Admin.');
+            });
+        } else if (verifiedUser && hasRole) {
             message.reply(`You're already verified as \`${verifiedUser.robloxName}\`! Do you want to update your information or change your account? (\`yes\`/\`no\`)`);
             message.channel.awaitMessages(filter, {max: 1, time: 30000, errors: ['time']}).then(async collected => {
                 let msg = collected.first();
@@ -225,7 +234,7 @@ module.exports = class VerifyCommand extends Command {
                 message.reply('You took too long to respond. Cancelled.');
             });
         } else {
-            promptUser(message);
+            message.reply('An error occurred: Error `0x9D3`. Please report this to an Admin.');
         }
     };
     determineChanges(message) {

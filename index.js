@@ -58,7 +58,12 @@ async function start() {
 }
 
 process.on('uncaughtException', (err) => {
-    ErrorManager.create(err, 'runtime')
+    console.error(err);
+    try {
+        ErrorManager.create(err, 'runtime')
+    } catch {
+        // do nothing
+    }
 })
 
 start(); // Finally start the bot :D

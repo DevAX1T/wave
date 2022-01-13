@@ -69,9 +69,8 @@ class DiscordCase {
         this.DMEmbed?.delete();
     }
     async send() {
-        return new Promise(async (resolve, reject) => {
-            let action = this.Case.action.includes('ban') ? 'ban' : this.Case.action;
-            let embedcolor = this.color();//color[actions[action]];
+        return new Promise(async (resolve) => {
+            let embedcolor = this.color();
             let channel = await $client.channels.cache.get(settings.channels.discord_logs);
             let embed = new MessageEmbed()
             .setTitle('Moderation Action')
@@ -110,13 +109,12 @@ class DiscordCase {
                 tban: ['temporarily banned', 'from'],
                 ban: ['banned', 'from'],
             }
-            let ua = this.Case.action;
-            let useraction = useractions[ua];
+            let useraction = useractions[this.Case.action];
             let baseMessage = stripIndents`
                 A moderator has ${useraction[0]} you ${useraction[1]} the Lost Islands Discord.
                 You may appeal this action via the [appeal form](${settings.appealForm}).`;
             let discordMessage = `[Additionally, you can click me to rejoin the server.](${settings.discordInvite}).`
-            let addMessage = (ua != 'warn' && ua != 'mute' && ua!= 'unmute')
+            let addMessage = (this.Case.action != 'warn' && this.Case.action != 'mute' && this.Case.action != 'unmute')
             if (addMessage) {
                 baseMessage += `\n${discordMessage}`;
             }
@@ -153,6 +151,7 @@ class DiscordCase {
                     $.set('users', this.Case.offender, {
                       history: [this.Case.id],
                     }).then(res2 => {
+                        global.lastCase = this.Case.id;
                         if (this.isNew && this.Case.expires && this.Case.action === 'tban') {
                             $.set('active-cases', this.id, this.Case).then(res3 => {
                                 resolve([res, res2, res3]);
@@ -170,15 +169,6 @@ class DiscordCase {
         })
     }
     async edit(moderator, newReason) {
-        // edit the case reason and edit the history array
-        /* HISTORY ARRAY
-        {
-            moderator: '000000',
-            timestamp: 000000 [unix timestamp],
-            oldReason: '',
-        }
-        */
-       // history always exists for a case (as blank array)
        return new Promise((resolve, reject) => {
            let updTable = {
                 moderator: moderator, // moderator id
@@ -197,9 +187,6 @@ class DiscordCase {
                 reject(e);
            })
          });
-    }
-    async delete() { // no way to delete a case for now lol
-        
     }
 }
 

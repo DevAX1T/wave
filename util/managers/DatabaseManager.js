@@ -20,8 +20,12 @@ class DatabaseManager {
                 this.r = r;
                 resolve(conn);
                 output('blue', 'DatabaseManager', 'Connected to RethinkDB')
-                conn.addListener('error', process.exit);
-                conn.addListener('close', process.exit);
+                function closed(e) {
+                    output('red', 'DatabaseManager', e.stack || 'Connection to RethinkDB was closed');
+                    process.exit(1);
+                }
+                conn.addListener('error', closed);
+                conn.addListener('close', closed);
             }).catch(reject);
         });
     }

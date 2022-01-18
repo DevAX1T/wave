@@ -20,6 +20,8 @@ class DatabaseManager {
                 this.r = r;
                 resolve(conn);
                 output('blue', 'DatabaseManager', 'Connected to RethinkDB')
+                conn.addListener('error', process.exit);
+                conn.addListener('close', process.exit);
             }).catch(reject);
         });
     }

@@ -11,6 +11,7 @@ class DatabaseManager {
             password: password,
         }
         this.name = name;
+        this.reconnecting = false;
         global.$ = this;
     }
     async connect() {
@@ -19,13 +20,19 @@ class DatabaseManager {
                 this.conn = conn;
                 this.r = r;
                 resolve(conn);
-                output('blue', 'DatabaseManager', 'Connected to RethinkDB')
-                function closed(e) {
-                    output('red', 'DatabaseManager', e.stack || 'Connection to RethinkDB was closed');
-                    process.exit(1);
-                }
-                conn.addListener('error', closed);
-                conn.addListener('close', closed);
+                output('blue', 'DatabaseManager', this.reconnecting ? 'Reconnected to RethinkDB' : 'Connected to RethinkDB')
+                conn.addListener('close', () => {
+                    if (!this.reconnecting) {
+                        output('red', 'DatabaseManager', 'Connection to RethinkDB was closed');
+                        this.reconnecting = true;
+                        this.connect().then(() => {
+                            this.reconnecting = false
+                        }).catch(() => {
+                            output('red', 'DatabaseManager', 'Failed to reconnect to RethinkDB');
+                            process.exit(); // Just restart the bot if we fail to reconnect
+                        })
+                    }
+                });
             }).catch(reject);
         });
     }
